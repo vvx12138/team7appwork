@@ -5,6 +5,7 @@ Hotel Booking Cancellation Dashboard
 
 import streamlit as st
 import pandas as pd
+from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # 页面配置
@@ -18,10 +19,16 @@ st.set_page_config(
 # ---------------------------------------------------------------------------
 # 数据加载与清洗
 # ---------------------------------------------------------------------------
-@st.cache_data
-def load_data(path: str = "hotel_bookings.csv") -> pd.DataFrame:
-    def load_data(path: str = "hotel_bookings.csv"):
+# 用 Path(__file__) 定位 CSV：
+#   若本文件在 pages/ 下 → parent.parent 是仓库根目录
+#   若本文件在根目录    → 请改成 Path(__file__).resolve().parent
+CSV_PATH = Path(__file__).resolve().parent.parent / "hotel_bookings.csv"
 
+
+@st.cache_data
+def load_data(path: Path = CSV_PATH) -> pd.DataFrame:
+    # ---- 读取数据 ----
+    df = pd.read_csv(path)
 
     # ---- 清洗 1：ADR 异常值 ----
     # 原始数据中 adr 存在负值和极端值（如 5400），会严重拉高均值
@@ -51,7 +58,7 @@ df = load_data()
 # ---------------------------------------------------------------------------
 # 标题与说明
 # ---------------------------------------------------------------------------
-st.title("🏨 酒店预订取消看板 —— 【团队名】")
+st.title("🏨 酒店预订取消看板 —— team7")
 st.caption(
     "面向 **酒店收益经理（Revenue Manager）**，支持'按渠道调整房量配额与押金政策'的决策。"
 )
