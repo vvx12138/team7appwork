@@ -20,7 +20,8 @@ st.set_page_config(
 # ---------------------------------------------------------------------------
 @st.cache_data
 def load_data(path: str = "hotel_bookings.csv") -> pd.DataFrame:
-    df = pd.read_csv(path)
+    def load_data(path: str = "hotel_bookings.csv"):
+
 
     # ---- 清洗 1：ADR 异常值 ----
     # 原始数据中 adr 存在负值和极端值（如 5400），会严重拉高均值
